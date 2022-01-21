@@ -9,7 +9,7 @@ use booosta\Framework as b;
 b::croot();
 b::load();
 
-class Installer extends \booosta\base\Base
+class Installer
 {
   public static function letsgo(Event $e)
   {
@@ -33,8 +33,8 @@ class Installer extends \booosta\base\Base
     file_put_contents('local/key.php', '<?php $this->key = "' . base64_encode(openssl_random_pseudo_bytes(32)) . '"; ?>');    
 
     $tpl = file_get_contents('local/config.incl.dist.php');
-    $code = str_replace('{confirm_registration}', $var['registrationconfirmation'] ? 'true' : 'false', $tpl);
-    $code = str_replace('{allow_registration}', $var['userregistration'] ? 'true' : 'false', $code);
+    $code = str_replace('{confirm_registration}', !empty($var['registrationconfirmation']) ? 'true' : 'false', $tpl);
+    $code = str_replace('{allow_registration}', !empty($var['userregistration']) ? 'true' : 'false', $code);
     $code = str_replace('{sitename}', $var['sitename'], $code);
     $code = str_replace('{sitename_short}', substr($var['sitename'], 0, 3), $code);
     $code = str_replace('{mail_sender}', $var['email'] ?? 'my@email.com', $code);
@@ -62,6 +62,8 @@ class Worker extends \booosta\base\Base
 {
   public function __invoke()
   {
+    include 'local/config.incl.php';
+
     $sql = file_get_contents('install/mysql.sql');
     if(!$this->DB->query_value("show tables like 'adminuser'")) $this->DB->multi_query($sql);
     #if(!$this->DB->query_value('select id from adminuser where id=1')) $this->DB->multi_query($sql);
