@@ -271,7 +271,7 @@ CREATE TABLE IF NOT EXISTS `form_token` (
 CREATE TABLE IF NOT EXISTS `cache` (
   `ckey` varchar(254) NOT NULL,
   `dtime` int(11) NOT NULL,
-  `content` varchar(60000) NULL,
+  `content` text NULL,
   PRIMARY KEY (`ckey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

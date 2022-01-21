@@ -13,16 +13,6 @@ class Installer extends \booosta\base\Base
 {
   public static function letsgo(Event $e)
   {
-    $worker = new Worker();
-    $worker();
-  }
-}
-
-
-class Worker extends \booosta\base\Base
-{
-  public function __invoke()
-  {
     print "Installer started.\n";
 
     if(is_readable('.installervars')):
@@ -61,6 +51,17 @@ class Worker extends \booosta\base\Base
 
     file_put_contents('local/config.incl.php', $code);
 
+    // next part must not be run in static function to have $this->DB available
+    $worker = new Worker();
+    $worker();
+  }
+}
+
+
+class Worker extends \booosta\base\Base
+{
+  public function __invoke()
+  {
     $sql = file_get_contents('install/mysql.sql');
     if(!$this->DB->query_value("show tables like 'adminuser'")) $this->DB->multi_query($sql);
     #if(!$this->DB->query_value('select id from adminuser where id=1')) $this->DB->multi_query($sql);
