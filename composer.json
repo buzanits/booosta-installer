@@ -5,7 +5,7 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "booosta\\installer\\": "src"
+            "booosta\\installer\\": "install"
         }
     },
     "authors": [
@@ -19,32 +19,23 @@
         "php": ">=8.0.0"
     },
     "scripts": {
-        "letsgo": [
-            "@composer require booosta/webapp-package",
+        "letsgo-test": [
             "\\booosta\\installer\\Installer::letsgo"
         ],
-        "add_bootstrap": [
-            "@composer require booosta/bootstrap"
-        ],
-        "add_adminlte": [
-            "@composer require booosta/adminlte"
-        ],
-        "add_urlhandler": [
-            "@composer require booosta/urlhandler"
-        ],
-        "add_usersystem": [
+        "letsgo": [
+            "@composer require booosta/webapp-package",
+            "@composer require booosta/bootstrap",
+            "@composer require booosta/adminlte",
+            "@composer require booosta/urlhandler",
             "@composer require booosta/usersystem",
             "@composer require booosta/db_authenticator",
-            "@composer require booosta/db_privileges"
+            "@composer require booosta/db_privileges",
+            "@composer require booosta/mysqli",
+            "\\booosta\\installer\\Installer::letsgo"
         ],
-        "add_mysqli": [
-            "@composer require booosta/mysqli"
-        ],
-        "add_postgresql": [
-            "@composer require booosta/postgresql"
-        ],
-        "add_sqlite": [
-            "@composer require booosta/sqlite"
+        "letsgo-minimal": [
+            "@composer require booosta/webapp-package",
+            "\\booosta\\installer\\Installer::letsgo_minimal"
         ]
     }
 }
