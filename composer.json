@@ -24,7 +24,6 @@
         ],
         "letsgo": [
             "@composer require booosta/webapp-package",
-            "@composer require booosta/bootstrap",
             "@composer require booosta/adminlte",
             "@composer require booosta/urlhandler",
             "@composer require booosta/usersystem",

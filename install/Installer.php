@@ -12,7 +12,7 @@ class Installer extends \booosta\base\Base
   {
     print "Installer started.\n";
     print getcwd() . "\n";
-    return;
+    #return;
 
     if(is_readable('.installervars')):
       $installervars = json_decode(file_get_contents('.installervars'), true);
