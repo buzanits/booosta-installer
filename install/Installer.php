@@ -51,7 +51,7 @@ class Installer
 
     file_put_contents('local/config.incl.php', $code);
 
-    copy('Installer/htaccess.dist', '.htaccess');
+    copy('install/htaccess.dist', '.htaccess');
     unlink('tpl/dummy');
     unlink('upload/dummy');
 
