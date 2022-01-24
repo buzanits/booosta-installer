@@ -51,8 +51,12 @@ class Installer
 
     file_put_contents('local/config.incl.php', $code);
 
+    copy('Installer/htaccess.dist', '.htaccess');
+    unlink('tpl/dummy');
+    unlink('upload/dummy');
+
     // next part must not be run in static function to have $this->DB available
-    $worker = new Worker();
+    $worker = new Worker($var);
     $worker();
   }
 }
@@ -60,19 +64,19 @@ class Installer
 
 class Worker extends \booosta\base\Base
 {
+  public function __construct(protected $var) {}
+
   public function __invoke()
   {
     include 'local/config.incl.php';
 
     $sql = file_get_contents('install/mysql.sql');
     if(!$this->DB->query_value("show tables like 'adminuser'")) $this->DB->multi_query($sql);
-    #if(!$this->DB->query_value('select id from adminuser where id=1')) $this->DB->multi_query($sql);
     if($error = $this->DB->get_error()) print 'setting up DB: ' . $error;
-    #if($error = $this->DB->get_error()) $this->raise_error('setting up DB: ' . $error);
 
-    $crypterclass = $this->config('crypter_class') ? $this->config('crypter_class') : 'aes256';
+    $crypterclass = $this->config('crypter_class') ?? 'aes256';
     $crypter = $this->makeInstance($crypterclass);
-    $pwd = $crypter->encrypt($var['password']);
+    $pwd = $crypter->encrypt($this->var['password']);
     #\booosta\debug("password: {$var['password']}"); \booosta\debug("enc: $pwd");
     $this->DB->query("update adminuser set password='$pwd' where username='admin'");
 
