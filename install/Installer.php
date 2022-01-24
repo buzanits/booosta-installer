@@ -64,7 +64,10 @@ class Installer
 
 class Worker extends \booosta\base\Base
 {
-  public function __construct(protected $var) {}
+  public function __construct(protected $var) 
+  {
+    parent::__construct();
+  }
 
   public function __invoke()
   {
