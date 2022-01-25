@@ -9,6 +9,7 @@ Framework::$CONFIG = [
 'confirm_registration'   => {confirm_registration},
 'aes256_keyfile'         => 'local/key.php',
 'language'               => '{language}',
+'template_module'        => 'adminlte',
   
 'db_module'              => '{db_module}',
 'db_hostname'            => '{db_hostname}',
