@@ -54,6 +54,7 @@ class Installer
     copy('install/htaccess.dist', '.htaccess');
     unlink('tpl/dummy');
     unlink('upload/dummy');
+    unlink('incl/dummy');
 
     // next part must not be run in static function to have $this->DB available
     $worker = new Worker($var);
