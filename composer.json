@@ -16,7 +16,14 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=8.0.0"
+        "php": ">=8.0.0",
+        "booosta/webapp-package": "dev-master",
+        "booosta/adminlte": "dev-master",
+        "booosta/urlhandler": "dev-master",
+        "booosta/usersystem": "dev-master",
+        "booosta/db_authenticator": "dev-master",
+        "booosta/db_privileges": "dev-master",
+        "booosta/mysqli": "dev-master"
     },
     "scripts": {
         "letsgo-test": [
@@ -35,6 +42,10 @@
         "letsgo-minimal": [
             "@composer require booosta/webapp-package",
             "\\booosta\\installer\\Installer::letsgo_minimal"
+        ],
+        "mkfiles": [
+            "@putenv COMPOSER=vendor/booosta/mkfiles/composer.json",
+            "@composer mkfiles" 
         ]
     }
 }

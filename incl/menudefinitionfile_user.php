@@ -5,7 +5,7 @@ $menu = [
                           ],
 
          'Application' => [
-                            'Dummy' => '/index',
+                            'Dummy' => '/user',
                             ###menuitems###
                           ],
          'Logout' => '/logout_user',
