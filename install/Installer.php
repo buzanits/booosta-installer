@@ -20,6 +20,8 @@ class Installer
       extract($installervars);
     endif;
 
+    if($db_hostname == '') $db_hostname = 'localhost';
+
     $var['sitename'] = readline("Website name: [$sitename] ") ?: $sitename;
     $var['db_hostname'] = readline("DB hostname [$db_hostname]: ") ?: $db_hostname;
     $var['db_name'] = readline("DB name: [$db_name] ") ?: $db_name;
