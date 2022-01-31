@@ -23,8 +23,8 @@ Framework::$CONFIG = [
 
 'use_edit_delete_pics'   => true,
 
-'always_load_jquery'     => true,
-'always_load_bootstrap'  => true,
+'jquery_loaded'          => true,
+'bootstrap_loaded'       => true,
 
 # usually you do not need to change anything beyond this line
 
