@@ -333,6 +333,112 @@ ALTER TABLE `user_privilege`
 ALTER TABLE `user_role`
   ADD CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`role`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Table structure for table `compactdisc`
+--
+
+CREATE TABLE `compactdisc` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `artist` varchar(255) NOT NULL,
+  `genre` enum('pop','rock','classic','other') NOT NULL,
+  `publication` date DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `cdr` tinyint(4) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `compactdisc`
+--
+
+INSERT INTO `compactdisc` (`id`, `name`, `artist`, `genre`, `publication`, `description`, `cdr`) VALUES
+(1, 'Super Trouper', 'ABBA', 'pop', '2022-01-01', 'ABBA!', 1),
+(2, 'Undercover', 'Stones', 'rock', '2022-01-03', 'Stones!', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `song`
+--
+
+CREATE TABLE `song` (
+  `id` int(11) NOT NULL,
+  `compactdisc` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `length` int(11) NOT NULL,
+  `number` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `song`
+--
+
+INSERT INTO `song` (`id`, `compactdisc`, `name`, `length`, `number`) VALUES
+(1, 1, 'Super Trouper', 180, 1),
+(2, 1, 'Andante, Andante', 170, 2),
+(4, 1, 'Happy New Year', 183, 3);
+
+--
+-- Indexes for table `compactdisc`
+--
+ALTER TABLE `compactdisc`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `song`
+--
+ALTER TABLE `song`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `compactdisc` (`compactdisc`);
+
+--
+-- AUTO_INCREMENT for table `compactdisc`
+--
+ALTER TABLE `compactdisc`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `song`
+--
+ALTER TABLE `song`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Constraints for table `song`
+--
+ALTER TABLE `song`
+  ADD CONSTRAINT `song_ibfk_1` FOREIGN KEY (`compactdisc`) REFERENCES `compactdisc` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+--
+-- Table structure for table `event`
+--
+
+CREATE TABLE `event` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `startdate` datetime NOT NULL,
+  `enddate` datetime NOT NULL,
+  `color` varchar(255) DEFAULT NULL,
+  `readonly` tinyint(4) NOT NULL DEFAULT 0,
+  `allday` tinyint(4) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indexes for table `event`
+--
+ALTER TABLE `event`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for table `event`
+--
+ALTER TABLE `event`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
