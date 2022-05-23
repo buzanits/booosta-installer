@@ -32,7 +32,9 @@ suggested:
 - Create the DB tables for your data with your favorite tools (like phpmyadmin)
 - Create the PHP and template files for every table with
 ```
-#> composer mkfiles tablename
+#> composer mkfiles
 ```
+- Enter the name of the table you want the files to be created for
+- If there is a subtable or supertable enter their name or leave the answer empty
 - Edit the PHP files and templates to your need
 - Be aware that calling the mkfiles command will overwrite existing files!
