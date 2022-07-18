@@ -9,7 +9,7 @@ Up to version 3 Booosta was available at Sourceforge: https://sourceforge.net/pr
 ## Installation
 ### Requirements
 - PHP >= 8.0
-- composer  
+- composer >= 2.3
   Installation of Booosta is done with composer. If you don't have composer installed, see https://getcomposer.org.  
   
 suggested:
