@@ -14,6 +14,12 @@
             "email": "peter@icb.at"
         }
     ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
     "minimum-stability": "dev",
     "require": {
         "php": ">=8.0.0",
