@@ -11,6 +11,14 @@ b::load();
 
 class Installer
 {
+  protected static function readline($prompt = null)
+  {
+    if($prompt) echo $prompt;
+    $fp = fopen("php://stdin","r");
+    $line = rtrim(fgets($fp, 1024));
+    return $line;
+  }
+
   public static function letsgo(Event $e)
   {
     print "Installer started.\n";
@@ -22,12 +30,12 @@ class Installer
 
     if($db_hostname == '') $db_hostname = 'localhost';
 
-    $var['sitename'] = readline("Website name: [$sitename] ") ?: $sitename;
-    $var['db_hostname'] = readline("DB hostname [$db_hostname]: ") ?: $db_hostname;
-    $var['db_name'] = readline("DB name: [$db_name] ") ?: $db_name;
-    $var['db_user'] = readline("DB user: [$db_user] ") ?: $db_user;
-    $var['db_password'] = readline("DB_password: [$db_password] ") ?: $db_password;
-    $var['password'] = readline("admin password: [$password] ") ?: $password;
+    $var['sitename'] = self::readline("Website name: [$sitename] ") ?: $sitename;
+    $var['db_hostname'] = self::readline("DB hostname [$db_hostname]: ") ?: $db_hostname;
+    $var['db_name'] = self::readline("DB name: [$db_name] ") ?: $db_name;
+    $var['db_user'] = self::readline("DB user: [$db_user] ") ?: $db_user;
+    $var['db_password'] = self::readline("DB_password: [$db_password] ") ?: $db_password;
+    $var['password'] = self::readline("admin password: [$password] ") ?: $password;
 
     $json = json_encode($var);
     file_put_contents('.installervars', $json);
@@ -89,3 +97,4 @@ class Worker extends \booosta\base\Base
     print "\nInstaller has finished now. Check if everything looks fine and then delete the install directory and the file .installervars\n\n";
   }
 }
+
