@@ -17,7 +17,6 @@ $menu = [
                                   ],
          'Application' => [
                             'Dummy' => '/index',
-                            #'SMS' => '{%base_dir}sms.php',
                             #'Test' => '{%base_dir}test.php',
             ###menuitems###
                           ],
