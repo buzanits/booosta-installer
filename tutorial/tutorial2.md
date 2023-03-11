@@ -77,4 +77,86 @@ f}
 
 Try playing around in this file and see, how the output in the browser changes!
 
+Now we see, that our select for the lecturers gender ist not very amazing. Because we only store `m` or `f` in the database, the wizard only shows these values. We want to make this a little bit prettier. We want the words `male` or `female` to appear in the select, but still send the letters to the server like they are in the database:
+
+```
+{BSELECT|gender|texttitle::Gender
+[m]male
+[f]female}
+```
+In the brackets `[]` we tell the templateparser which values to use and afterwards we tell it, which values to display.
+
+### Changing the script files
+
+Now add a new lecturer with the form. After you submit the form, you come back to the list of lecturers with already one entry in the list - the one you just created. But the list looks rather ugly. It shows the ID - a useless information - and for the gender only the one character. So let's edit the file `lecturer.php`:
+
+```php
+class App extends booosta\usersystem\Webappadmin
+{
+  #protected $fields = 'name,edit,delete';
+  #protected $header = 'Name,Edit,Delete';
+```
+
+Here you see that a new class named `App` is defined which is derived from the superclass `booosta\usersystem\Webappadmin`. This superclass contains all the basic CRUD logic that is done in your web app. You also see that there are class variables `$fields` and `$header` which are commented out. You can remove the `#` in front of these lines end edit the content of this variable. You just set the content to the names of database fields you want to have displayed in the list. This list is comma seperated:
+
+```php
+class App extends booosta\usersystem\Webappadmin
+{
+  protected $fields = 'name,birthdate,gender,comment,edit,delete';
+  protected $header = 'Name,Date of Birth,Gender,Comment,Edit,Delete';
+```
+
+Save the file and reload your browser tab. You will se that magically the ID field disappeared from the list. It is not in the `$fields` variable. Go and play around with these two variables!
+
+Now we want the gender to be displayed more nicely. If you are familar with object oriented programming, you know that methods of superclasses can be overridden in subclasses. There is a method `in_default_makelist($list)` that is called in the superclass after the list of records has been created in the default action. The default action is the one that is called when you do not add anything after `/lecturer` in the URL. So we add the following method just before the closing `}` of the class:
+
+```php
+  protected function in_default_makelist($list) {
+      $list->add_replaces('gender', [function($val) { return $val == 'f' ? 'female' : 'male'; }]);
+  }
+```
+  
+ This looks quite complicated. But it's easy. The method `add_replaces` of the `$list` object replaces the field `gender` (which must be present in `$fields` above) with the second parameter. This parameter could be a simple value like `'hello world`' or the result of a function. If you use a function it has to be inside an array for technical reasons. This function looks at the value that is read from the database and if it reads `f`, it returns `female` otherwise `male`. Save and reload and see the result.
+
+Your also can use all other fields of the current record as variables in `add_replaces`:
+
+```php
+  protected function in_default_makelist($list) {
+      $list->add_replaces('gender', [function($val) { return $val == 'f' ? '{name} is female' : '{name} is male'; }]);
+  }
+```
+
+If the logic of the function you call inside `add_replaces` is very complicated, you could define an additional method in this class with all this logic and then call this method inside of `add_replaces`.
+
+Now click on the edit icon of one of your records and you come to the edit form. It looks quite like the form for creating new records. When you open tpl/lecturer_edit.tpl you see one obvious difference: There is an additional parameter in each template parser tag, that holds the current value that is to be displayed in the form:
+
+```
+{BTEXT|name|{*name}|texttitle::Name}
+{BDATE|birthdate|{*birthdate}|texttitle::Birthdate}
+{BSELECT|gender|{%gender}|texttitle::Gender
+m
+f}
+{BTEXTAREA|comment|10|texttitle::Comment
+{*comment}}
+```
+
+Here `{*name}` or `{%gender}` hold these values. This is the way variable values are displayed in the templates. There is a slightly difference between `{*` and `{%`: The first one escapes the characters `" { } | $ \` so that they are displayed on the page. The second one does not so the template parser interprets them as special control characters. So you can put variables inside variables for example.
+
+The values used here are automatically prefilled by the Booosta webapp module. But you can define your own. Put this line on top of the name line:
+
+```
+{BSTATIC|{*hello}|Message}
+{BTEXT|name|{*name}|texttitle::Name}
+```
+
+and add this method to lecturer.php:
+
+```php
+  protected function before_action_edit() {
+      $this->TPL['hello'] = 'Hello World!';
+  }
+```
+
+The `$this->TPL['hello']` in the script appears as `{*hello}` in the template!
+
 **Work in progress** - this will be continued soon!
