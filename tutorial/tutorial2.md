@@ -249,6 +249,20 @@ This method is called after the record has been inserted. We learn some new thin
 returns a data object with the corresponding data in it. You can imagine data objects as what MVC frameworks refer as _model_. Booosta only uses a very loose MVC approach. You can see the
 templates and the template engine as _view_, the classes you define in the PHP files as _controller_ and the data objects as _model_. Of course, this is **not** a real MVC system!
 
+The first parameter of `getDataobject` is the name of the table where the data is derived from. The second is a clause, telling which record to get. This can be a SQL where clause like 
+`"lastname='Doe'"` or an integer, which is the `id` of the record. In this second parameter we see another new thing: `$this->VAR`. In this array all the `GET` and `POST` parameters that
+are passed to the script are present. The form sends a `POST` parameter `lecturer` to the script and we can read it here with `$this->VAR['lecturer']`. Data objects are defined in the
+Booosta module [dataobjects](https://github.com/buzanits/booosta-dataobjects).
+
+The next line shows, how we can access the data of the retrieved record. The method `get($column)` reads the value of a named column of the record. So `$lecturer->get('email')` reads
+the value of the field `email` in the record retrieved in the previous line. In line 7 we have another new feature. We create a new object of the class `email`. Usually you create new
+objects with the keyword `new` in PHP. In Booosta you do it with `$this->makeInstance()`. The reason is, that there are several initialisations done in the object after creation, such as
+inheriting the database connection. Of course `new` still works and has to be used when instantiating non Booosta objects.
+
+In this example, a new object of a class is created, that is defined in the Booosta module [email](https://github.com/buzanits/booosta-email). As you see, Booosta is organized in several
+modules. All Booosta classes are defined in modules that reside under `vendor/booosta/modulename`. All classes are subclasses of the basic class `booosta\base\Base` which is defined in the
+[base module](https://github.com/buzanits/booosta-base). The first parameter of `makeInstance()` is the class name and the further parameters are the parameters of the classes constructor.
+
 
 
 **Work in progress** - this will be continued soon!
