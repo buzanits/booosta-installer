@@ -54,6 +54,7 @@ The templates are inside the folder `tpl/`. You can edit them there. Let's have 
 {BSELECT|gender|texttitle::Gender
 m
 f}
+{BTEXT|email|texttitle::Email}
 {BTEXTAREA|comment|10|texttitle::Comment}
 
 {BFORMSUBMIT|class::center-block}
@@ -76,6 +77,17 @@ f}
 - `{BLINK|Back|javascript:history.go(-1);}` adds a link button. Here with the caption `Back` and the link target `javascript:history.go(-1)` which makes the browser to go one step back in history
 
 Try playing around in this file and see, how the output in the browser changes!
+
+Maybe you wonder, how Booosta knows when to use a date field, a texarea, a select or an ordinary text field. It determines this from the datatype in the database table. This is how datatypes
+are mapped to HTML form fields:
+
+- `DATE` or `DATETIME` becomes a date field with a datepicker (DATETIME does not provide a picker for hours or minutes. But you can add something like `12:45:00` manually.
+- `TEXT` becomes a textarea
+- `INT` with a foreign key on it becomes a select with values from the foreign key table
+- `TINYINT` becomes a checkbox
+- anything else becomes a text field
+
+So it is very important that you carefully make decisions about the datatypes in your tables and the foreign keys!
 
 Now we see, that our select for the lecturers gender ist not very amazing. Because we only store `m` or `f` in the database, the wizard only shows these values. We want to make this a little bit prettier. We want the words `male` or `female` to appear in the select, but still send the letters to the server like they are in the database:
 
@@ -158,5 +170,85 @@ and add this method to lecturer.php:
 ```
 
 The `$this->TPL['hello']` in the script appears as `{*hello}` in the template!
+
+You see, that on the bottom of the page, there is a panel with the courses of this lecturer. This is empty of course, as we did not create any courses yet. So click on **New Course** to create one.
+You will see another form similar to the New Lecturer from we already know. You see, that the TINYINT field `isopen` became a checkbox field in the form. When the user checks it, a `1` will be
+sent to the database, else there will be stored a `0` in the database. This is because Mysql and MariaDB do not know boolean datatypes.
+
+When you fill in all the fields and submit the form you will come back to the **Edit lecturer** page. You might wonder, why you are not at a list of all courses now. This is because `course`
+is a subtable of `lecturer`. This means, every course belongs to a lecturer and therefore all his courses are displayed at the lecturers edit page.
+
+You see, that the list is not very beautiful again. Last time we fixed that by adding class variables `$fields` and `$header`. There is a similar mechanism for the display of the sub data:
+`$sub_fields` and `$sub_header`. They have to appear in the script for the supertable - in our case `lecturer.php`:
+
+```php
+  protected $sub_fields = 'name,isopen,starttime,endtime,edit,delete';
+  protected $sub_header = 'Name,Open,Start,End,edit,delete';
+```
+
+Now our list is pretty. Let's make work for our users easier now. We know that our colleague creates every course 6 months in advance. So when the secretary creates a new course, we display
+the day in 6 months as default. (Well that may be a Sunday, but we ignore that to keep the example simple.) We calculate that date, provide it to the template and use it in the template.
+
+`course.php` (inside the class definition):
+```php
+  protected function before_action_new() {
+    $this->TPL['defaultStartDate'] = date('Y-m-d 09:00:00', strtotime('+6 months'));
+    $this->TPL['defaultEndDate'] = date('Y-m-d 10:00:00', strtotime('+6 months'));
+  }
+```
+
+replace in `tpl/course_new.tpl`:
+```
+{BDATE|starttime|{*defaultStartDate}|texttitle::Starttime}
+{BDATE|endtime|{*defaultEndDate}|texttitle::Endtime}
+```
+
+When you now open the form for new courses you see these dates prefilled in the fields. Of course you can edit the values there. In the code you have seen something new: We add a new method
+named `before_action_new()` to our class. This is a method defined in a superclass that usually does _nothing_. But you can override this method to do something. `before_action_new()` is
+automatically called just before Booosta is building the form for adding a new record. Here the method defines two new template variables.
+
+There are several methods, that can be overridden:
+
+- `before_action_new()`
+- `after_action_new()`
+- `before_action_edit()`
+- `after_action_edit()`
+- `before_action_delete()`
+- `after_action_delete()`
+- `before_action_newdo()`
+- `after_action_newdo()`
+- `before_action_editdo()`
+- `after_action_editdo()`
+- `before_action_deleteyes()`
+- `after_action_deleteyes()`
+- `before_action_default()`
+- `after_action_default()`
+
+The first six are self explanating. They are called before and after the corresponding action. The last two are called before and after the list of records is created. For example, when
+you call `/lecturer` in your application, the `action_default()` is executed, which builds this list. `before_action_default()` is then called before this is done. By the way, you also can
+override the complete `action_default()`, so that something completely different is done when `/lecturer` is called.
+
+All the methods that end with `do` are called before or after the corresponding action in the database is really executed. So `before_action_newdo()` is called before the new
+record is inserted into the database table, `after_action_newdo()` after that.
+
+Now let's say, after we added a course for a lecturer, we want to send an email to him. We add to `course.php`:
+```php
+  protected function after_action_newdo() {
+    $lecturer = $this->getDataobject('lecturer', $this->VAR['lecturer']);
+    $email = $lecturer->get('email');
+    $text = 'A new course with the following name has been added for you: ' . $this->VAR['name'];
+
+    if($email) {
+      $mail = $this->makeInstance('email', 'office@supercolleague.edu', $email, 'New course added', $text);
+      $mail->send();
+    }
+  }
+```
+
+This method is called after the record has been inserted. We learn some new things here: First, the method `$this->getDataobject()`. This method retrieves a record from the database and
+returns a data object with the corresponding data in it. You can imagine data objects as what MVC frameworks refer as _model_. Booosta only uses a very loose MVC approach. You can see the
+templates and the template engine as _view_, the classes you define in the PHP files as _controller_ and the data objects as _model_. Of course, this is **not** a real MVC system!
+
+
 
 **Work in progress** - this will be continued soon!

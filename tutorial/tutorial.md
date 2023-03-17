@@ -58,6 +58,7 @@ MySQL [(supercolleage)]>
   `name` varchar(255) NOT NULL,
   `birthdate` date DEFAULT NULL,
   `gender` enum('m','f') NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `comment` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -66,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `course` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `lecturer` int(11) NOT NULL,
+  `isopen` tinyint(4) NOT NULL DEFAULT '0',
   `starttime` datetime NOT NULL,
   `endtime` datetime NOT NULL,
   `description` text,
