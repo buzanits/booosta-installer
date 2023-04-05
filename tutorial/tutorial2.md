@@ -263,6 +263,32 @@ In this example, a new object of a class is created, that is defined in the Booo
 modules. All Booosta classes are defined in modules that reside under `vendor/booosta/modulename`. All classes are subclasses of the basic class `booosta\base\Base` which is defined in the
 [base module](https://github.com/buzanits/booosta-base). The first parameter of `makeInstance()` is the class name and the further parameters are the parameters of the classes constructor.
 
+In fact, there are additional hook functions that are executed before and after an action like adding records. They deal with the data itself. Let's say, if the end date of a course is not
+provided, we want to automatically add an end date one hour after the begin of a course. We add to `course.php`:
+```
+  protected function before_add_($data, $obj) {
+    if($data['endtime'] == '') $obj->set('endtime', date('Y-m-d H:i:s', strtotime($data['starttime'] . ' +1 hours')));
+  }
+```
 
+So how does this work? There are two parameters. In `$data` all the data submitted by the HTML form is present. `$obj` is a data object that holds the *new* data. This object has not stored
+this data in the database when this method is called. This means, we can manipulate the data in this object and the manipulated data will go into the database. So in this example we set the
+field `endtime` to a new value that is one hour after the time that is provided in the field `starttime`.
 
-**Work in progress** - this will be continued soon!
+There are several hook functions called before and after the CRUD actions where data can be read or manipulated:
+
+- `before_add_($data, $obj)`
+- `after_add_($data, $newid)`
+- `before_edit_($id, $data, $obj)`
+- `after_edit_($id, $data)`
+- `before_delete_($id)`
+- `after_delete_($id)`
+
+Be aware of the trailing _ in all of this functions! The reason for this _ is a historical one and it has never been changed ;-)
+
+In all of these functions `$id` holds the id of the current record worked on, `$data` the values that have been sumitted by the form, `$newid` is the id of the recently added record
+and `$obj` is the dataobject that holds the data that will be inserted or updated to the database. Manipulating values in `$data` has no effect. To change the data sent to the database
+you have to set the values in this object with `$obj->set('fieldname', 'newvalue');`.
+
+As a rule of thumb you should place actions that do not work with data in the `before_action...` and `after_action...` methods and the others in the latter ones.
+
