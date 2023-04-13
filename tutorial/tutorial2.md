@@ -39,7 +39,22 @@ You also could add additional main menu entries. But always have at least one me
 
 ### Changing the template files
 
-The templates are inside the folder `tpl/`. You can edit them there. Let's have a look on the template for adding new lecturers `tpl/lecturer_new.tpl`:
+The templates are inside the folder `tpl/`. You can edit them there. In newer versions of Booosta, there is a directory structure inside tpl/:
+
+`tpl/lang-en` holds all the templates with english language (which is the default). If you are using additional languages, you can copy the folder
+`lang-en` with all its content. For example to `lang-de` (if you want to translate your application to german). Then edit all the files inside this
+folder and translate everything.
+
+Inside the language folder(s) there are usually two folders: `type-user` and `type-adminuser`. Booosta deals with two different user types.
+Administrative users (`adminuser`) and ordinary users (`user`). They have different templates which are in the according folder.
+
+If there is not template file found in the structure under `lang-xx` they are searched in `tpl/` directly. So if you create your own template
+files, you can place them inside the structure (which is the best solution) or directly in `tpl/`.
+
+To switch your application to a different language, edit the `language` key in the config file `local/config.incl.php`. Up to now we have only
+created scripts for adminusers. We will come to ordinary users later on.
+
+Let's have a look on the template for adding new lecturers `tpl/lang-en/type-adminuser/lecturer_new.tpl`:
 
 ```
 {BBOXCENTER}
@@ -140,7 +155,7 @@ Your also can use all other fields of the current record as variables in `add_re
 
 If the logic of the function you call inside `add_replaces` is very complicated, you could define an additional method in this class with all this logic and then call this method inside of `add_replaces`.
 
-Now click on the edit icon of one of your records and you come to the edit form. It looks quite like the form for creating new records. When you open tpl/lecturer_edit.tpl you see one obvious difference: There is an additional parameter in each template parser tag, that holds the current value that is to be displayed in the form:
+Now click on the edit icon of one of your records and you come to the edit form. It looks quite like the form for creating new records. When you open `tpl/lang-en/type-adminuser/lecturer_edit.tpl` you see one obvious difference: There is an additional parameter in each template parser tag, that holds the current value that is to be displayed in the form:
 
 ```
 {BTEXT|name|{*name}|texttitle::Name}
@@ -197,7 +212,7 @@ the day in 6 months as default. (Well that may be a Sunday, but we ignore that t
   }
 ```
 
-replace in `tpl/course_new.tpl`:
+replace in `tpl/lang-en/type-adminuser/course_new.tpl`:
 ```
 {BDATE|starttime|{*defaultStartDate}|texttitle::Starttime}
 {BDATE|endtime|{*defaultEndDate}|texttitle::Endtime}
