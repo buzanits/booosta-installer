@@ -31,17 +31,17 @@ Let's look at this piece of code. The method is named `action_showcourses`. This
 In the first line of the method we use an object named `$this->DB`. This object holds the current database connection and provides several public methods to access the database.
 These methods are:
 
-- query($sql, $params)
+- `query($sql, $params)`
   executes a SQL query against the DBMS that does not expect a result (like `insert`, `update` or `delete` statements)
-- query_value($sql, $params)
+- `query_value($sql, $params)`
   executes a SQL query that returns exectly one value (like `select name from lecturer where id=1`)
-- query_value_set($sql, $params)
+- `query_value_set($sql, $params)`
   executes a SQL query that returns a set of values from one column and several rows (like `select name from lecturer`)
-- query_list($sql, $params)
+- `query_list($sql, $params)`
   executes a SQL query that returns several columns of one row (like `select * from lecturer where id=1`)
-- query_arrays($sql, $params)
+- `query_arrays($sql, $params)`
   executes a SQL query that returns several columns of several rows (like `select * from lecturer`)
-- query_index_array($sql, $params)
+- `query_index_array($sql, $params)`
   executes a SQL query that must return exactly two columns per row (like `select id, name from lecturer`). The result is an array indexed with the first row and with the second row in the data.
 
 The parameter `$sql` is the query to execute. To prevent SQL injection, values can be masked with a `?` in the query string. Those will be replaced with the values in the parameter `$params`.
@@ -52,5 +52,29 @@ In the object variable `$this->id` the id of the current record is hold (e. g. i
 
 In the las line of the action method you see the variable `$this->maintpl`. This holds the template that is used for rendering the output in the browser. It can hold two different contents:
 The name of a file that holds the template or the content of the template itself. So if you do `$this->maintpl = "Hello, World!";` then the string "Hello, World!" is printed in the browser.
+You can also place the template file inside the `lang-xy/type-adminuser/` structure inside `tpl/`. Then you just make `$this->maintpl = "showcourses.tpl";` and the file will be found in the directory
+of the current language and user type.
+
+### Code for non admin users
+
+Up to now we only created code for admin users. In our example admin users are the stuff of our colleague that manage all the courses and lecturers. Now we add a different user type. This
+should be the students that take the courses and are teached by the lecturers. They should have different forms and menus than admin users. We create the data for users in a quite similar way
+as we do it for adminusers:
+
+```
+#> composer mkuserfiles
+> @putenv COMPOSER=vendor/booosta/mkfiles/composer.json
+> \booosta\mkfiles\Mkfiles::invoke
+table name: registration
+subtable name:
+supertable name: course
+
+#> composer mkuserfiles
+> @putenv COMPOSER=vendor/booosta/mkfiles/composer.json
+> \booosta\mkfiles\Mkfiles::invoke
+table name: course
+subtable name: registration
+supertable name:
+```
 
 

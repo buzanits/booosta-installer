@@ -52,6 +52,11 @@
         "mkfiles": [
             "@putenv COMPOSER=vendor/booosta/mkfiles/composer.json",
             "@composer mkfiles" 
+        ],
+        "mkuserfiles": [
+            "@putenv COMPOSER=vendor/booosta/mkfiles/composer.json",
+            "@composer mkuserfiles"
+
         ]
     }
 }
