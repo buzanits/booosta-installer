@@ -77,4 +77,13 @@ subtable name: registration
 supertable name:
 ```
 
+With this two commands we create two PHP files, `user_registration.php` and `user_course.php`. As you see, these are prefixed with `user_` to distinguish them from the scripts running
+the admin user actions. The template files are placed under `tpl/lang-en/type-user/`. As with the admin templates, you can copy the folder `lang-en` to translate the templates to a different
+language, that has been set in `local/config.incl.php`.
 
+When you look into the just created PHP files, you see, that they look quite similar to the admin scripts. Except the class is derived from `\booosta\usersystem\Webappuser` insted of 
+`\booosta\usersystem\Webappadmin`. For executing these scripts you must log in with a user account, not an adminuser account. This is done with `https://my.domain.com/login_user` instead of
+`login_adminuser`. Adminusers can create new users in the `User Administration / User` menu on the left.
+
+Users can register themselves if the key `allow_registration` is set to `true` in `local/config.incl.php`, which is `false` by default. If you want to force self registered users to confirm
+their email address by clicking on a link sent to them, also set `confirm_registration` to `true` in the config. 
