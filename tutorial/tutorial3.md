@@ -86,4 +86,8 @@ When you look into the just created PHP files, you see, that they look quite sim
 `login_adminuser`. Adminusers can create new users in the `User Administration / User` menu on the left.
 
 Users can register themselves if the key `allow_registration` is set to `true` in `local/config.incl.php`, which is `false` by default. If you want to force self registered users to confirm
-their email address by clicking on a link sent to them, also set `confirm_registration` to `true` in the config. 
+their email address by clicking on a link sent to them, also set `confirm_registration` to `true` in the config. If you want to direct anyone that types `https://my.domain.com` into the browser 
+to the user area instead of the admin area, edit `index.php` and replace `/admin` with `/user` there. Then a default page in the user area will be displayed if a user is logged in and if not,
+the user login page will appear.
+
+
