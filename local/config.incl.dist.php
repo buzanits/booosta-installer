@@ -25,6 +25,10 @@ Framework::$CONFIG = [
 
 'jquery_loaded'          => true,
 'bootstrap_loaded'       => true,
+'datatables_loaded'      => true,
+'always_load_jquery'     => false,
+'use_bootstrap_select'   => true,
+'templateparser_defaultvars' => ['boxsize' => '12,12,12,12'],
 
 # usually you do not need to change anything beyond this line
 
