@@ -38,3 +38,7 @@ suggested:
 - If there is a subtable or supertable enter their name or leave the answer empty
 - Edit the PHP files and templates to your need
 - Be aware that calling the mkfiles command will overwrite existing files!
+
+## Tutorial
+
+See the tutorial at https://github.com/buzanits/booosta-installer/tutorial/tutorial.md
