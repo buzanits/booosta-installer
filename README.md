@@ -41,4 +41,4 @@ suggested:
 
 ## Tutorial
 
-See the tutorial at https://github.com/buzanits/booosta-installer/tutorial/tutorial.md
+See the tutorial at https://github.com/buzanits/booosta-installer/blob/master/tutorial/tutorial.md
