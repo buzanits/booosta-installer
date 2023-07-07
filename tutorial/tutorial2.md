@@ -307,3 +307,4 @@ you have to set the values in this object with `$obj->set('fieldname', 'newvalue
 
 As a rule of thumb you should place actions that do not work with data in the `before_action...` and `after_action...` methods and the others in the latter ones.
 
+Continue with the [next step](tutorial3.md) of this tutorial.
