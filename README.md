@@ -28,6 +28,8 @@ suggested:
 ```
 #> composer require booosta/modulename
 ```
+- Let the web root on your web server point to this directory (`mycoolproject` in this example)
+
 ### Create your Application
 - Create the DB tables for your data with your favorite tools (like phpmyadmin)
 - Create the PHP and template files for every table with
