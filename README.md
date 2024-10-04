@@ -13,7 +13,7 @@ Up to version 3 Booosta was available at Sourceforge: https://sourceforge.net/pr
   Installation of Booosta is done with composer. If you don't have composer installed, see https://getcomposer.org.  
 - Mysql or MariaDB
 - mysqli PHP module
-- Use of .htaccess must be enabled in Webserver
+- Use of .htaccess must be enabled in Webserver  
   In Apache config use something like `AllowOverride all`
 
 ### Install your Booosta App
