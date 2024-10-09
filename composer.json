@@ -23,13 +23,13 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=8.0.0",
-        "booosta/webapp-package": "dev-master",
-        "booosta/adminlte": "dev-master",
-        "booosta/urlhandler": "dev-master",
-        "booosta/usersystem": "dev-master",
-        "booosta/db_authenticator": "dev-master",
-        "booosta/db_privileges": "dev-master",
-        "booosta/mysqli": "dev-master"
+        "booosta/webapp-package": "^4.0",
+        "booosta/adminlte": "^4.0",
+        "booosta/urlhandler": "^4.0",
+        "booosta/usersystem": "^4.0",
+        "booosta/db_authenticator": "^4.0",
+        "booosta/db_privileges": "^4.0",
+        "booosta/mysqli": "^4.0"
     },
     "scripts": {
         "letsgo-test": [
